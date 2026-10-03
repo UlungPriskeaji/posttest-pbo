@@ -5,6 +5,7 @@ Program ini merupakan sistem sederhana untuk penjualan dan inventaris kartu Trad
 
 Melanjutkan dari posttest sebelumnya, program ini dibuat untuk memenuhi penerapan inheritance serta hubungan antar-class berupa association, aggregation, dan composition.
 
+
 1. Inheritance
 
 Inheritance diterapkan dengan membuat class KartuTCG sebagai superclass, kemudian membuat dua subclass yaitu:
@@ -15,35 +16,48 @@ Inheritance diterapkan dengan membuat class KartuTCG sebagai superclass, kemudia
 
 Pada constructor masing-masing subclass digunakan "super().__init__()" untuk menjalankan constructor dari superclass.
 Contohnya pada KartuPokemon:
+
 "super().__init__(nama, "Pokemon", harga, stok)"
 
 Sedangkan pada KartuOnePiece:
+
 "super().__init__(nama, "One Piece", harga, stok)"
 
 Selain mewarisi atribut dari superclass, setiap subclass juga memiliki atribut spesifik berupa:
+
 "seri_kartu"
+
 "kelangkaan"
+
 Atribut tersebut digunakan untuk menyimpan informasi tambahan mengenai kartu.
 
 Inheritance juga menerapkan method overriding. Method "tampilkan_info_kartu()" yang terdapat pada "KartuTCG" ditulis kembali pada "KartuPokemon" dan "KartuOnePiece". Tujuannya agar masing-masing subclass dapat menampilkan informasi kartu beserta atribut tambahannya.
 
 Superclass juga menggunakan atribut protected _nama. Atribut tersebut dapat diakses oleh subclass ketika menampilkan informasi kartu.
 
+
 2. Association
 
 Association diterapkan pada hubungan antara Transaksi dengan Pelanggan dan KartuTCG.
 
 Pada saat membuat objek Transaksi, objek pelanggan dan kartu diberikan sebagai parameter:
+
 "transaksi1 = Transaksi(
-     pelanggan1,
-     kartu1,
-     2
+
+    pelanggan1,
+
+    kartu1,
+
+    2
+
 )"
 
 Di dalam class Transaksi, objek tersebut kemudian disimpan:
 
 "self.pelanggan = pelanggan"
+
 "self.kartu = kartu"
+
 
 Hubungan ini termasuk association karena Transaksi hanya menggunakan objek Pelanggan dan KartuTCG yang sudah dibuat sebelumnya.
 
@@ -52,8 +66,12 @@ Objek pelanggan dan kartu tidak dibuat oleh Transaksi. Keduanya dapat tetap ada 
 Dengan demikian, hubungan sederhananya seperti berikut:
 
 Transaksi ───── Pelanggan
-     │
-     └───────── KartuTCG
+
+         │
+
+         └───────── KartuTCG
+
+
 
 3. Aggregation
 
@@ -66,7 +84,9 @@ Class Toko memiliki sebuah daftar untuk menyimpan kartu:
 Kartu kemudian ditambahkan ke dalam toko menggunakan method:
 
 "toko1.tambah_kartu(kartu1)"
+
 "toko1.tambah_kartu(kartu2)"
+
 "toko1.tambah_kartu(kartu3)"
 
 Kartu-kartu tersebut dibuat terlebih dahulu di luar class Toko. Setelah itu, objek kartu diberikan kepada Toko untuk dimasukkan ke dalam "daftar_kartu".
@@ -79,6 +99,7 @@ Toko ◇──────── KartuTCG
 
 Simbol belah ketupat kosong menunjukkan adanya hubungan aggregation.
 
+
 4. Composition
 
 Composition diterapkan pada hubungan antara Transaksi dengan DetailTransaksi.
@@ -86,8 +107,11 @@ Composition diterapkan pada hubungan antara Transaksi dengan DetailTransaksi.
 Class DetailTransaksi digunakan untuk menyimpan informasi kartu dan jumlah yang dibeli:
 
 "class DetailTransaksi:
+
     def __init__(self, kartu, jumlah):
+
         self.kartu = kartu
+
         self.jumlah = jumlah"
 
 Berbeda dengan association dan aggregation, objek DetailTransaksi dibuat langsung di dalam class Transaksi:
