@@ -147,6 +147,40 @@ Stok kartu 1 berhasil diubah menjadi 10 karena nilainya valid. Ketika stok kartu
 ---
 
 ## Prinsip SOLID
-
-**Open/Closed Principle (OCP)**
-Fungsi `bayar_pesanan()` tidak perlu diubah ketika terdapat metode pembayaran baru. Cukup dibuat kelas baru yang memiliki method `proses_pembayaran()`, misalnya pembayaran transfer bank, tanpa mengubah kode yang sudah ada.
+Program ini menerapkan tiga prinsip SOLID, yaitu OCP, LSP, dan DIP.
+ 
+| Prinsip | Bagian kode yang menerapkan |
+|---|---|
+| Open/Closed Principle (OCP) | Fungsi `bayar_pesanan()` dan hierarki `KartuTCG` |
+| Liskov Substitution Principle (LSP) | `KartuPokemon` dan `KartuOnePiece` sebagai pengganti `KartuTCG` |
+| Dependency Inversion Principle (DIP) | Parameter `metode` pada `bayar_pesanan()` |
+ 
+### 1. Open/Closed Principle (OCP)
+ 
+Kode terbuka untuk ditambah, tetapi tertutup untuk diubah. Prinsip ini diterapkan pada dua bagian:
+ 
+- **Metode pembayaran.** Fungsi `bayar_pesanan()` tidak perlu diubah ketika ada metode pembayaran baru. Cukup dibuat kelas baru yang memiliki method `proses_pembayaran()`, misalnya `PembayaranTransfer`, tanpa menyentuh `PembayaranQRIS`, `PembayaranTunai`, maupun `bayar_pesanan()`.
+```python
+def bayar_pesanan(metode, jumlah):
+    metode.proses_pembayaran(jumlah)
+```
+ 
+- **Jenis kartu.** Jenis kartu baru, misalnya `KartuYuGiOh`, cukup dibuat sebagai subclass `KartuTCG` yang mengimplementasikan kedua abstract method. Kelas `Toko`, `Transaksi`, dan perulangan pada program utama tidak perlu diubah.
+### 2. Liskov Substitution Principle (LSP)
+ 
+Objek subclass dapat dipakai di mana pun objek parent-nya dipakai tanpa menyebabkan error. `KartuPokemon` dan `KartuOnePiece` dapat menggantikan `KartuTCG` karena keduanya mengimplementasikan seluruh abstract method dan tidak menolak atau melempar error pada method yang diwarisi.
+ 
+- `Toko.tambah_kartu()` dan `Transaksi` menerima objek `KartuTCG` apa pun, baik Pokemon maupun One Piece.
+- Perulangan `for kartu in daftar_kartu` memanggil `jalankan()`, `tampilkan_info_kartu()`, dan `hitung_value_stok()` pada kedua jenis kartu dengan cara yang sama dan berjalan tanpa error.
+### 3. Dependency Inversion Principle (DIP)
+ 
+Objek yang dibutuhkan suatu bagian program tidak dibuat di dalamnya, tetapi dikirim dari luar. Fungsi `bayar_pesanan()` menerima objek metode pembayaran melalui parameter `metode`, sehingga fungsi ini tidak membuat `PembayaranQRIS` atau `PembayaranTunai` sendiri. Fungsi hanya bergantung pada keberadaan method `proses_pembayaran()`, bukan pada kelas pembayaran tertentu. Objek pembayaran dibuat pada program utama:
+ 
+```python
+qris = PembayaranQRIS()
+tunai = PembayaranTunai()
+ 
+bayar_pesanan(qris, 15000000)
+bayar_pesanan(tunai, 10000000)
+```
+ 
