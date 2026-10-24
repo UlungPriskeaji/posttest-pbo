@@ -76,6 +76,7 @@ Kelas `PembayaranQRIS` dan `PembayaranTunai` tidak memiliki hubungan pewarisan, 
 ![Gambar 5. Duck typing](png/5.png)
 
 **Output:**
+
 ![Gambar 5b. Output Duck typing](png/5b.png)
 
 **Keterangan:**
@@ -88,6 +89,7 @@ Kelas `KartuTCG` mendefinisikan method `__add__()` sehingga dua objek kartu dapa
 ![Gambar 6. Operator overloading](png/6.png)
 
 **Output:**
+
 ![Gambar 6b. Output Operator overloading](png/6b.png)
 
 **Keterangan:**
@@ -110,6 +112,7 @@ Pengujian ini menunjukkan ketiga relasi pada diagram berjalan di kode. Kartu dim
 ![Gambar 7. Pengujian relasi](png/7.png)
 
 **Output:**
+
 ![Gambar 8. output Pengujian relasi](png/8.png)
 
 **Keterangan:**
@@ -122,6 +125,7 @@ Method `ubah_status_toko()` adalah class method yang mengubah atribut class `sta
 ![Gambar 9. Class method dan static method](png/9.png)
 
 **Output:**
+
 ![Gambar 9b. output Class method dan static method](png/9b.png)
 
 **Keterangan:**
@@ -134,6 +138,7 @@ Atribut `__stok` bersifat private sehingga diakses melalui property `stok`. Sett
 ![Gambar 10. Property getter dan setter](png/10.png)
 
 **Output:**
+
 ![Gambar 10b. Output Property getter dan setter](png/10b.png)
 
 **Keterangan:**
