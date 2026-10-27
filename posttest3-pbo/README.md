@@ -12,19 +12,39 @@ Class yang digunakan adalah `KartuTCG` (abstract class), `KartuPokemon`, `KartuO
 
 ![Gambar 1. Class Diagram](png/uml.png)
 
-Diagram di atas menampilkan nama kelas, atribut dan method utama, serta garis relasi antar kelas. Setiap relasi pada diagram benar-benar diimplementasikan pada kode program.
+Diagram UML di atas menggambarkan kelas-kelas yang digunakan dalam program beserta atribut, method, dan hubungan antar kelasnya. Dalam diagram ini terdapat empat jenis hubungan, yaitu asosiasi, agregasi, komposisi, dan pewarisan. Selain itu, terdapat juga *multiplicity* yang menunjukkan jumlah objek yang dapat terlibat dalam suatu hubungan. Angka `1` berarti tepat satu objek, sedangkan `0..*` berarti bisa tidak ada objek sama sekali atau bisa lebih dari satu objek.
 
 **Asosiasi (`Transaksi` → `Pelanggan` dan `Transaksi` → `KartuTCG`)**
-Objek `Pelanggan` dan `KartuTCG` dibuat di luar kelas `Transaksi`, kemudian diberikan melalui constructor dan disimpan pada atribut `self.pelanggan` dan `self.kartu`. Relasi ini berupa asosiasi karena pelanggan dan kartu merupakan objek yang berdiri sendiri dan tetap ada walaupun transaksi tidak ada.
+
+Pada program ini, kelas `Transaksi` menggunakan objek dari kelas `Pelanggan` dan `KartuTCG`. Kedua objek tersebut dibuat di luar kelas `Transaksi`, kemudian dimasukkan melalui constructor dan disimpan pada atribut `self.pelanggan` dan `self.kartu`.
+
+Hubungan ini termasuk asosiasi karena objek pelanggan dan kartu dapat berdiri sendiri meskipun objek transaksi sudah tidak ada.
+
+Pada hubungan `Transaksi` dengan `Pelanggan`, angka `1` yang berada di dekat kelas `Pelanggan` menunjukkan bahwa setiap transaksi hanya melibatkan satu pelanggan. Sementara itu, angka `0..*` di dekat kelas `Transaksi` berarti satu pelanggan bisa saja belum pernah melakukan transaksi atau sudah melakukan banyak transaksi.
+
+Hal yang sama juga berlaku pada hubungan `Transaksi` dengan `KartuTCG`. Angka `1` di dekat `KartuTCG` berarti setiap transaksi hanya menggunakan satu jenis kartu, sedangkan `0..*` di dekat `Transaksi` berarti satu objek kartu dapat digunakan dalam beberapa transaksi atau belum pernah digunakan sama sekali.
 
 **Agregasi (`Toko` ◇— `KartuTCG`)**
-Kelas `Toko` menampung kumpulan kartu pada list `daftar_kartu` melalui method `tambah_kartu()`, sedangkan objek kartu dibuat di luar kelas `Toko`. Relasi ini dipilih sebagai agregasi karena apabila objek `Toko` dihapus, objek kartu tetap ada dan masih dapat digunakan oleh toko lain.
+
+Kelas `Toko` memiliki list `daftar_kartu` yang digunakan untuk menyimpan kumpulan objek kartu. Kartu tersebut ditambahkan menggunakan method `tambah_kartu()`. Objek kartu dibuat secara terpisah dari toko, sehingga ketika objek toko dihapus, kartu tersebut masih bisa digunakan.
+
+Hubungan ini termasuk agregasi karena objek kartu tidak bergantung sepenuhnya pada objek toko. Pada diagram, angka `0..*` di dekat kelas `KartuTCG` menunjukkan bahwa satu toko bisa memiliki banyak kartu atau belum memiliki kartu sama sekali. Sementara itu, angka `0..*` di dekat kelas `Toko` berarti satu kartu bisa terdaftar pada beberapa toko atau tidak terdaftar pada toko mana pun. Hal ini memungkinkan karena program tidak membatasi satu kartu hanya untuk satu toko.
 
 **Komposisi (`Transaksi` ◆— `DetailTransaksi`)**
-Objek `DetailTransaksi` dibuat langsung di dalam constructor kelas `Transaksi`. Relasi ini dipilih sebagai komposisi karena detail transaksi (kartu dan jumlah) tidak memiliki arti tanpa transaksinya, sehingga siklus hidupnya bergantung penuh pada `Transaksi`.
+
+Pada kelas `Transaksi`, objek `DetailTransaksi` dibuat langsung di dalam constructor. Objek ini digunakan untuk menyimpan informasi kartu dan jumlah pembelian dalam suatu transaksi.
+
+Hubungan ini termasuk komposisi karena detail transaksi merupakan bagian dari transaksi itu sendiri dan keberadaannya bergantung pada objek `Transaksi`.
+
+Pada diagram, kedua kelas memiliki angka `1`. Angka `1` di dekat `DetailTransaksi` menunjukkan bahwa setiap transaksi memiliki tepat satu detail transaksi. Sementara itu, angka `1` di dekat `Transaksi` berarti setiap detail transaksi hanya menjadi bagian dari satu transaksi. Jadi, hubungan kedua kelas ini bersifat satu banding satu atau *one-to-one*.
 
 **Pewarisan (`KartuPokemon` dan `KartuOnePiece` → `KartuTCG`)**
-Kedua kelas tersebut merupakan subclass dari `KartuTCG`.
+
+Kelas `KartuPokemon` dan `KartuOnePiece` merupakan turunan dari kelas `KartuTCG`. Kedua kelas tersebut mewarisi atribut dan method yang dimiliki oleh kelas induknya.
+
+Kelas `KartuTCG` dibuat sebagai abstract class yang memiliki dua abstract method, yaitu `tampilkan_info_kartu()` dan `hitung_value_stok()`. Kedua method tersebut kemudian diimplementasikan kembali pada masing-masing subclass sesuai dengan jenis kartunya.
+
+Pada diagram UML, hubungan pewarisan ditunjukkan dengan garis yang memiliki ujung segitiga kosong mengarah ke kelas `KartuTCG`. Berbeda dengan hubungan sebelumnya, pewarisan tidak menggunakan angka multiplicity karena hubungan ini menunjukkan hubungan antara kelas induk dan kelas turunan, bukan jumlah objek yang saling terhubung.
 
 ---
 
@@ -147,40 +167,49 @@ Stok kartu 1 berhasil diubah menjadi 10 karena nilainya valid. Ketika stok kartu
 ---
 
 ## Prinsip SOLID
-Program ini menerapkan tiga prinsip SOLID, yaitu OCP, LSP, dan DIP.
- 
-| Prinsip | Bagian kode yang menerapkan |
+
+Program ini menerapkan prinsip Open/Closed Principle (OCP) dan Liskov Substitution Principle (LSP), serta pendekatan yang mendukung Dependency Inversion Principle (DIP).
+
+| Prinsip | Bagian Kode |
 |---|---|
-| Open/Closed Principle (OCP) | Fungsi `bayar_pesanan()` dan hierarki `KartuTCG` |
-| Liskov Substitution Principle (LSP) | `KartuPokemon` dan `KartuOnePiece` sebagai pengganti `KartuTCG` |
+| Open/Closed Principle (OCP) | `bayar_pesanan()` dan `KartuTCG` |
+| Liskov Substitution Principle (LSP) | `KartuPokemon` dan `KartuOnePiece` |
 | Dependency Inversion Principle (DIP) | Parameter `metode` pada `bayar_pesanan()` |
- 
+
 ### 1. Open/Closed Principle (OCP)
- 
-Kode terbuka untuk ditambah, tetapi tertutup untuk diubah. Prinsip ini diterapkan pada dua bagian:
- 
-- **Metode pembayaran.** Fungsi `bayar_pesanan()` tidak perlu diubah ketika ada metode pembayaran baru. Cukup dibuat kelas baru yang memiliki method `proses_pembayaran()`, misalnya `PembayaranTransfer`, tanpa menyentuh `PembayaranQRIS`, `PembayaranTunai`, maupun `bayar_pesanan()`.
+
+Prinsip OCP berarti program dapat ditambahkan fitur baru tanpa harus mengubah kode yang sudah ada. Contohnya, kita bisa menambahkan metode pembayaran baru selama memiliki method `proses_pembayaran()`.
+
 ```python
 def bayar_pesanan(metode, jumlah):
     metode.proses_pembayaran(jumlah)
 ```
- 
-- **Jenis kartu.** Jenis kartu baru, misalnya `KartuYuGiOh`, cukup dibuat sebagai subclass `KartuTCG` yang mengimplementasikan kedua abstract method. Kelas `Toko`, `Transaksi`, dan perulangan pada program utama tidak perlu diubah.
+
+Selain itu, jenis kartu baru seperti `KartuYuGiOh` juga dapat ditambahkan dengan membuat subclass dari `KartuTCG` dan mengimplementasikan kedua abstract method.
+
 ### 2. Liskov Substitution Principle (LSP)
- 
-Objek subclass dapat dipakai di mana pun objek parent-nya dipakai tanpa menyebabkan error. `KartuPokemon` dan `KartuOnePiece` dapat menggantikan `KartuTCG` karena keduanya mengimplementasikan seluruh abstract method dan tidak menolak atau melempar error pada method yang diwarisi.
- 
-- `Toko.tambah_kartu()` dan `Transaksi` menerima objek `KartuTCG` apa pun, baik Pokemon maupun One Piece.
-- Perulangan `for kartu in daftar_kartu` memanggil `jalankan()`, `tampilkan_info_kartu()`, dan `hitung_value_stok()` pada kedua jenis kartu dengan cara yang sama dan berjalan tanpa error.
+
+Prinsip LSP berarti subclass dapat menggantikan parent class tanpa mengganggu jalannya program. Pada program ini, `KartuPokemon` dan `KartuOnePiece` dapat digunakan dengan cara yang sama karena keduanya merupakan turunan `KartuTCG`.
+
+```python
+for kartu in daftar_kartu:
+    kartu.jalankan()
+    kartu.tampilkan_info_kartu()
+    print("Nilai Stok: Rp", kartu.hitung_value_stok())
+```
+
+Kedua jenis kartu dapat menjalankan method tersebut tanpa perlu pengecekan tipe objek, meskipun hasilnya berbeda sesuai implementasi masing-masing.
+
 ### 3. Dependency Inversion Principle (DIP)
- 
-Objek yang dibutuhkan suatu bagian program tidak dibuat di dalamnya, tetapi dikirim dari luar. Fungsi `bayar_pesanan()` menerima objek metode pembayaran melalui parameter `metode`, sehingga fungsi ini tidak membuat `PembayaranQRIS` atau `PembayaranTunai` sendiri. Fungsi hanya bergantung pada keberadaan method `proses_pembayaran()`, bukan pada kelas pembayaran tertentu. Objek pembayaran dibuat pada program utama:
- 
+
+Prinsip DIP berarti program sebaiknya bergantung pada abstraksi, bukan kelas tertentu. Pada program ini, pendekatan yang mendukung DIP terlihat dari fungsi `bayar_pesanan()` yang menerima objek pembayaran melalui parameter `metode`.
+
 ```python
 qris = PembayaranQRIS()
 tunai = PembayaranTunai()
- 
+
 bayar_pesanan(qris, 15000000)
 bayar_pesanan(tunai, 10000000)
 ```
- 
+
+Fungsi tersebut dapat menggunakan QRIS maupun tunai tanpa perlu membuat objek pembayaran sendiri. Pendekatan ini menggunakan dependency injection dan duck typing, tetapi belum sepenuhnya menerapkan DIP karena belum ada abstract class khusus untuk pembayaran.
